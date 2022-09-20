@@ -1,46 +1,82 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"sort"
+	"strconv"
 )
 
-func median(data []int32, remove int32, add int32) (int32, []int32) {
-	fmt.Printf("1 %v %d %d\n", data, remove, add)
+type valueWithFreq struct {
+	value int32
+	freq  int
+}
 
-	if add != remove {
-		i := sort.Search(len(data), func(i int) bool { return data[i] >= remove })
-		if i < len(data) && data[i] == remove {
-			data = append(data[:i], data[i+1:]...)
-		}
+type listOfValuesWithFreq []valueWithFreq
 
-		j := sort.Search(len(data), func(i int) bool { return data[i] >= add })
-		if j == len(data) {
-			data = append(data, add)
-		} else {
-			mid := make([]int32, j)
-			copy(mid, data)
-			mid = append(mid[:j], add)
-			data = append(mid, data[j:]...)
+func (l *listOfValuesWithFreq) orderedInsert(v valueWithFreq) {
+
+}
+
+func get(vals []valueWithFreq, index int) int32 {
+	var pivot int
+
+	for _, vf := range vals {
+		pivot += vf.freq
+
+		if pivot > index {
+			return vf.value
 		}
 	}
 
-	fmt.Printf("2 %v\n\n", data)
+	return vals[len(vals)-1].value
+}
 
-	return data[len(data)/2], data
+func median(data []valueWithFreq, remove int32, add int32) (int32, []valueWithFreq) {
+	// fmt.Printf("1 %v %d %d\n", data, remove, add)
+
+	if add != remove {
+		i := sort.Search(len(data), func(i int) bool { return data[i].value >= remove })
+		if i < len(data) && data[i].value == remove {
+			data[i].freq--
+			if data[i].freq == 0 {
+				ret := make([]valueWithFreq, 0)
+				ret = append(ret, data[:i]...)
+				data = append(ret, data[i+1:]...)
+			}
+			fmt.Println(data)
+			os.Exit(1)
+		}
+
+		j := sort.Search(len(data), func(i int) bool { return data[i].value >= add })
+		if j == len(data) {
+			data = append(data, valueWithFreq{add, 1})
+		} else {
+			data[j].freq++
+		}
+	}
+
+	// fmt.Printf("2 %v\n\n", data)
+
+	cut := len(data) / 2
+	if len(data)%2 == 0 && get(data, cut) != get(data, cut-1) {
+		return (get(data, cut)+get(data, cut-1))/2 + +((get(data, cut) + get(data, cut-1)) % 2), data
+	}
+
+	return get(data, cut), data
 }
 
 func activityNotifications(expenditure []int32, d int32) (notifCount int32) {
 	size := int(d)
 
-	window := expenditure[0:size]
-	sort.Slice(window, func(i, j int) bool {
-		return window[i] < window[j]
+	sort.Slice(expenditure, func(i, j int) bool {
+		return expenditure[i] < expenditure[j]
 	})
 
-	p50 := window[size/2]
+	p50 := expenditure[size/2]
 
-	fmt.Printf("%d >= %d\n\n", expenditure[size], 2*p50)
+	// fmt.Printf("%d >= %d\n\n", expenditure[size], 2*p50)
 
 	if expenditure[size] >= 2*p50 {
 		notifCount++
@@ -48,8 +84,6 @@ func activityNotifications(expenditure []int32, d int32) (notifCount int32) {
 
 	for i := 1; i < len(expenditure)-size; i++ {
 		p50, window = median(window, expenditure[i-1], expenditure[i+size-1])
-
-		fmt.Printf("%d >= %d\n\n", expenditure[i+size], 2*p50)
 
 		if expenditure[i+size] >= 2*p50 {
 			notifCount++
@@ -60,5 +94,32 @@ func activityNotifications(expenditure []int32, d int32) (notifCount int32) {
 }
 
 func main() {
-	fmt.Println(activityNotifications([]int32{2, 3, 4, 2, 3, 6, 8, 4, 5}, 5))
+	f, err := os.Open("/home/brsantos/Projetos/hackerrank/fraudactnotifications_input.txt")
+	if err != nil {
+		fmt.Println("error opening file ", err)
+		os.Exit(1)
+	}
+	defer f.Close()
+	rd := bufio.NewScanner(f)
+
+	rd.Split(bufio.ScanWords)
+
+	rd.Scan()
+
+	rd.Scan()
+
+	window, err := strconv.Atoi(rd.Text())
+
+	var nums []int32
+
+	for rd.Scan() {
+		n, err := strconv.Atoi(rd.Text())
+		if err != nil {
+			fmt.Println("error reading value ", err)
+			os.Exit(1)
+		}
+		nums = append(nums, int32(n))
+	}
+
+	fmt.Println(activityNotifications(nums, int32(window)))
 }
