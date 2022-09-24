@@ -33,7 +33,7 @@ func bigSorting(unsorted []string) []string {
 	return unsorted
 }
 
-func main() {
+func mainBigsorting() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))

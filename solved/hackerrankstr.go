@@ -22,7 +22,7 @@ func hackerrankInString(s string) string {
 	return "NO"
 }
 
-func main() {
+func mainHackerrankstr() {
 	result := hackerrankInString("hackerworld")
 
 	fmt.Printf("%s\n", result)

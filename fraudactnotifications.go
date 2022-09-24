@@ -19,7 +19,7 @@ func (l *listOfValuesWithFreq) orderedInsert(v valueWithFreq) {
 
 }
 
-func get(vals []valueWithFreq, index int) int32 {
+func get(vals listOfValuesWithFreq, index int) int32 {
 	var pivot int
 
 	for _, vf := range vals {
@@ -33,7 +33,7 @@ func get(vals []valueWithFreq, index int) int32 {
 	return vals[len(vals)-1].value
 }
 
-func median(data []valueWithFreq, remove int32, add int32) (int32, []valueWithFreq) {
+func median(data listOfValuesWithFreq, remove int32, add int32) (int32, listOfValuesWithFreq) {
 	// fmt.Printf("1 %v %d %d\n", data, remove, add)
 
 	if add != remove {
@@ -41,7 +41,7 @@ func median(data []valueWithFreq, remove int32, add int32) (int32, []valueWithFr
 		if i < len(data) && data[i].value == remove {
 			data[i].freq--
 			if data[i].freq == 0 {
-				ret := make([]valueWithFreq, 0)
+				ret := make(listOfValuesWithFreq, 0)
 				ret = append(ret, data[:i]...)
 				data = append(ret, data[i+1:]...)
 			}
@@ -82,6 +82,8 @@ func activityNotifications(expenditure []int32, d int32) (notifCount int32) {
 		notifCount++
 	}
 
+	var window listOfValuesWithFreq
+
 	for i := 1; i < len(expenditure)-size; i++ {
 		p50, window = median(window, expenditure[i-1], expenditure[i+size-1])
 
@@ -109,6 +111,10 @@ func main() {
 	rd.Scan()
 
 	window, err := strconv.Atoi(rd.Text())
+	if err != nil {
+		fmt.Println("error reading value ", err)
+		os.Exit(1)
+	}
 
 	var nums []int32
 
