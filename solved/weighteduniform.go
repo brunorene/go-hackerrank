@@ -47,6 +47,6 @@ func weightedUniformStrings(s string, queries []int32) (result []string) {
 	return
 }
 
-func main() {
+func mainUniform() {
 	fmt.Println(weightedUniformStrings("abccddde", []int32{1, 3, 12, 5, 9, 10}))
 }

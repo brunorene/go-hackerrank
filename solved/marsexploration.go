@@ -24,6 +24,6 @@ func marsExploration(s string) int32 {
 	return int32(mistakes)
 }
 
-func main() {
+func mainMars() {
 	fmt.Println(marsExploration("SOSSOS"))
 }

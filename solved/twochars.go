@@ -89,6 +89,6 @@ func alternate(s string) int32 {
 	return int32(max)
 }
 
-func main() {
+func main2Chars() {
 	fmt.Println(alternate("beabeefeab"))
 }

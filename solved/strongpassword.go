@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"io"
 	"regexp"
-	"strings"
 )
 
 var (
@@ -49,23 +46,8 @@ func minimumNumber(n int32, password string) int32 {
 	return more + (6 - total)
 }
 
-func main() {
+func mainStrong() {
 	answer := minimumNumber(7, "AUzs-nV")
 
 	fmt.Println(answer)
-}
-
-func readLine(reader *bufio.Reader) string {
-	str, _, err := reader.ReadLine()
-	if err == io.EOF {
-		return ""
-	}
-
-	return strings.TrimRight(string(str), "\r\n")
-}
-
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

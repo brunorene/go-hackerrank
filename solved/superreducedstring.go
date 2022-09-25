@@ -3,10 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
 	"regexp"
-	"strings"
 )
 
 var sameChars = regexp.MustCompile(`aa|bb|cc|dd|ee|ff|gg|hh|ii|jj|kk|ll|mm|nn|oo|pp|qq|rr|ss|tt|uu|vv|ww|xx|yy|zz`)
@@ -30,7 +28,7 @@ func superReducedString(s string) string {
 	return s
 }
 
-func main() {
+func mainSuper() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
@@ -47,19 +45,4 @@ func main() {
 	fmt.Fprintf(writer, "%s\n", result)
 
 	writer.Flush()
-}
-
-func readLine(reader *bufio.Reader) string {
-	str, _, err := reader.ReadLine()
-	if err == io.EOF {
-		return ""
-	}
-
-	return strings.TrimRight(string(str), "\r\n")
-}
-
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

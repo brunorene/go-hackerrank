@@ -21,6 +21,6 @@ func pangrams(s string) string {
 	return "not pangram"
 }
 
-func main() {
+func mainPangram() {
 	fmt.Println(pangrams("We promptly judged antique ivory buckles for the next prize"))
 }

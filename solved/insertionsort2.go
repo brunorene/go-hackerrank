@@ -2,25 +2,10 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"io"
 	"os"
 	"strconv"
 	"strings"
 )
-
-/*
- * Complete the 'insertionSort2' function below.
- *
- * The function accepts following parameters:
- *  1. INTEGER n
- *  2. INTEGER_ARRAY arr
- */
-
-func print(arr []int32) {
-	out := fmt.Sprint(arr)
-	fmt.Println(out[1 : len(out)-1])
-}
 
 func insertion(n int32, arr []int32) []int32 {
 	last := arr[n-1]
@@ -55,7 +40,7 @@ func insertionSort2(n int32, arr []int32) {
 	}
 }
 
-func main() {
+func mainIns2() {
 	reader := bufio.NewReaderSize(os.Stdin, 16*1024*1024)
 
 	nTemp, err := strconv.ParseInt(strings.TrimSpace(readLine(reader)), 10, 64)
@@ -74,19 +59,4 @@ func main() {
 	}
 
 	insertionSort2(n, arr)
-}
-
-func readLine(reader *bufio.Reader) string {
-	str, _, err := reader.ReadLine()
-	if err == io.EOF {
-		return ""
-	}
-
-	return strings.TrimRight(string(str), "\r\n")
-}
-
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-	}
 }
