@@ -1,3 +1,3 @@
 module github.com/brunorene/go-hackerrank
 
-go 1.18
+go 1.23
